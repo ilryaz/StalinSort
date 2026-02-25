@@ -2,11 +2,34 @@ import sys
 from PySide6.QtWidgets import (QApplication, QMainWindow, QWidget,
                                QVBoxLayout, QHBoxLayout, QPushButton,
                                QListWidget, QComboBox, QListWidgetItem,
-                               QLabel)
+                               QLabel, QDialog, QLineEdit)
+
+class AddDialog(QDialog):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Add item")
+
+        layout = QVBoxLayout(self)
+
+        self.input_field = QLineEdit()
+        self.input_field.setPlaceholderText("Enter title")
+
+        self.add_button = QPushButton("Add")
+        self.add_button.clicked.connect(self.accept)
+
+        layout.addWidget(QLabel("Title:"))
+        layout.addWidget(self.input_field)
+        layout.addWidget(self.add_button)
+
+        self.setFixedSize(200, 100)
+
+    def get_text(self):
+        return self.input_field.text()
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+        self.setWindowTitle('StalinSort 3000')
         self.setup_ui()
     
     def setup_ui(self):
@@ -30,6 +53,7 @@ class MainWindow(QMainWindow):
 
         self.add_button_text = "Add"
         self.add_button = QPushButton(self.add_button_text)
+        self.add_button.clicked.connect(self.add_button_clicked)
 
         self.sort_button_text = "Sort"
         self.sort_button = QPushButton(self.sort_button_text)
@@ -44,6 +68,13 @@ class MainWindow(QMainWindow):
         lower_layout.addWidget(self.save_button)
         main_layout.addLayout(lower_layout)
 
+    def add_button_clicked(self):
+        dialog = AddDialog()
+
+        if dialog.exec():
+            text = dialog.get_text()
+            if text:
+                self.file_list.addItem(QListWidgetItem(text))
 
 app = QApplication(sys.argv)
 window = MainWindow()
