@@ -68,6 +68,8 @@ class MainWindow(QMainWindow):
         lower_layout.addWidget(self.save_button)
         main_layout.addLayout(lower_layout)
 
+        print(self.get_list_content(self.file_list))
+
     def add_button_clicked(self):
         dialog = AddDialog()
 
@@ -75,6 +77,13 @@ class MainWindow(QMainWindow):
             text = dialog.get_text()
             if text:
                 self.file_list.addItem(QListWidgetItem(text))
+    
+    def get_list_content(self, somelist):
+        content = []
+        for i in range(somelist.count()):
+            item = somelist.item(i)
+            content.append(item.text())
+        return content
 
 app = QApplication(sys.argv)
 window = MainWindow()
