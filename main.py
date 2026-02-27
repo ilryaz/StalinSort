@@ -68,8 +68,6 @@ class MainWindow(QMainWindow):
         lower_layout.addWidget(self.save_button)
         main_layout.addLayout(lower_layout)
 
-        print(self.get_list_content(self.file_list))
-
     def add_button_clicked(self):
         dialog = AddDialog()
 
@@ -84,6 +82,20 @@ class MainWindow(QMainWindow):
             item = somelist.item(i)
             content.append(item.text())
         return content
+
+    def stalin_sort(self, data):
+        new_data = []
+        main_type = type(data[0])
+
+        for datum in data:
+            if not new_data:
+                new_data.append(datum)
+
+            elif type(datum) == main_type:
+                if datum >= new_data[-1]:
+                    new_data.append(datum)
+
+        return new_data
 
 app = QApplication(sys.argv)
 window = MainWindow()
